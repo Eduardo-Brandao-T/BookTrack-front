@@ -1,55 +1,65 @@
-import { useState } from 'react'
+import { useForm } from 'react-hook-form'
 import { useAuth } from '@/app/hooks/useAuth'
 import Input from '@/components/atoms/Input'
 import Button from '@/components/atoms/Button'
 import Title from '@/components/atoms/Title'
+import { useNavigate } from 'react-router-dom'
+import type { LoginFormData } from '@/types/loginForm'
 
 export default function LoginForm() {
   const { login } = useAuth()
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [loading, setLoading] = useState(false)
+  const navigate = useNavigate()
+  const {
+    register,
+    handleSubmit,
+    formState: { isSubmitting }
+  } = useForm<LoginFormData>()
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setLoading(true)
+  const onSubmit = async (data: LoginFormData) => {
     try {
-      await login(email, password)
+      await login(data.email, data.password)
     } catch (err) {
       alert('Erro ao fazer login')
-    } finally {
-      setLoading(false)
     }
   }
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col items-center text-center space-y-2 w-full">
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      className="flex flex-col items-center text-center space-y-2 w-full"
+    >
       <Title>Bem-vindo à sua estante</Title>
 
       <Input
         type="email"
         placeholder="E-mail"
-        value={email}
-        onChange={e => setEmail(e.target.value)}
+        {...register('email', { required: true })}
       />
+
       <Input
         type="password"
         placeholder="Senha"
-        value={password}
-        onChange={e => setPassword(e.target.value)}
+        {...register('password', { required: true })}
       />
 
-      <Button type="submit" loading={loading}>
+      <Button type="submit" loading={isSubmitting}>
         Entrar
       </Button>
 
-      <button type="button" className="text-sm text-green-700 hover:underline cursor-pointer">
+      <button
+        type="button"
+        className="text-sm text-green-700 hover:underline cursor-pointer"
+      >
         Esqueci minha senha
       </button>
 
       <div className="text-sm">
         <span>Não tem conta? </span>
-        <button type="button" className="text-green-700 font-medium hover:underline cursor-pointer">
+        <button
+          type="button"
+          onClick={() => navigate('/register')}
+          className="text-green-700 font-medium hover:underline cursor-pointer"
+        >
           Cadastre-se
         </button>
       </div>
@@ -60,7 +70,11 @@ export default function LoginForm() {
         <div className="flex-grow border-t border-gray-300"></div>
       </div>
 
-      <Button type="button" variant="outline" className="flex items-center justify-center space-x-2">
+      <Button
+        type="button"
+        variant="outline"
+        className="flex items-center justify-center space-x-2"
+      >
         <img
           src="https://www.svgrepo.com/show/475656/google-color.svg"
           alt="Google"
