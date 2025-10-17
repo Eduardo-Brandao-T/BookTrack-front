@@ -1,7 +1,5 @@
 import type { User, LoginResponse } from '@/types/auth'
 
-
-
 export const authService = {
   async login(email: string, password: string): Promise<LoginResponse> {
     // futuramente, aqui vai sua chamada HTTP com fetch ou axios
@@ -28,4 +26,16 @@ export const authService = {
     const stored = localStorage.getItem('user')
     return stored ? JSON.parse(stored) : null
   },
+
+  async fakeGoogleLogin() {
+  return new Promise<{ email: string; name: string; hasCompleteProfile: boolean }>((resolve) => {
+    setTimeout(() => {
+      resolve({
+        email: "usuario@gmail.com",
+        name: "Eduardo Brandão",
+        hasCompleteProfile: false,
+      })
+    }, 1000)
+  })
+}
 }

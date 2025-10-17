@@ -1,27 +1,29 @@
-import { useForm } from 'react-hook-form'
-import { useAuth } from '@/app/hooks/useAuth'
-import Input from '@/components/atoms/Input'
-import Button from '@/components/atoms/Button'
-import Title from '@/components/atoms/Title'
-import { useNavigate } from 'react-router-dom'
-import type { LoginFormData } from '@/types/loginForm'
+import { useForm } from "react-hook-form";
+import { useAuth } from "@/app/hooks/useAuth";
+import Input from "@/components/atoms/Input";
+import Button from "@/components/atoms/Button";
+import Title from "@/components/atoms/Title";
+import { useNavigate } from "react-router-dom";
+import type { LoginFormData } from "@/types/loginForm";
+import { authService } from "@/services/authService";
+import LoginWithGoogle from "@/components/molecules/LoginWithGoogle";
 
 export default function LoginForm() {
-  const { login } = useAuth()
-  const navigate = useNavigate()
+  const { login } = useAuth();
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
-    formState: { isSubmitting }
-  } = useForm<LoginFormData>()
+    formState: { isSubmitting },
+  } = useForm<LoginFormData>();
 
   const onSubmit = async (data: LoginFormData) => {
     try {
-      await login(data.email, data.password)
+      await login(data.email, data.password);
     } catch (err) {
-      alert('Erro ao fazer login')
+      alert("Erro ao fazer login");
     }
-  }
+  };
 
   return (
     <form
@@ -33,13 +35,13 @@ export default function LoginForm() {
       <Input
         type="email"
         placeholder="E-mail"
-        {...register('email', { required: true })}
+        {...register("email", { required: true })}
       />
 
       <Input
         type="password"
         placeholder="Senha"
-        {...register('password', { required: true })}
+        {...register("password", { required: true })}
       />
 
       <Button type="submit" loading={isSubmitting}>
@@ -57,7 +59,7 @@ export default function LoginForm() {
         <span>Não tem conta? </span>
         <button
           type="button"
-          onClick={() => navigate('/register')}
+          onClick={() => navigate("/register")}
           className="text-green-700 font-medium hover:underline cursor-pointer"
         >
           Cadastre-se
@@ -70,18 +72,7 @@ export default function LoginForm() {
         <div className="flex-grow border-t border-gray-300"></div>
       </div>
 
-      <Button
-        type="button"
-        variant="outline"
-        className="flex items-center justify-center space-x-2"
-      >
-        <img
-          src="https://www.svgrepo.com/show/475656/google-color.svg"
-          alt="Google"
-          className="w-5 h-5"
-        />
-        <span>Entrar com Google</span>
-      </Button>
+      <LoginWithGoogle />
     </form>
-  )
+  );
 }
