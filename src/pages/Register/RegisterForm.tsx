@@ -1,16 +1,21 @@
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import folhaImg from "@/assets/folha.png";
-import AuthForm from "@/components/molecules/AuthForm";
 import Input from "@/components/atoms/Input";
 import Select from "@/components/atoms/Select";
 import type { RegisterFormData } from "@/types/registerForm";
-import axios from "axios";
 import { Gender } from "@/types/gender";
+import {
+  GENERIC_REGISTER_ERROR,
+  LOGIN_ROUTE,
+  REGISTER_COMPLETE,
+  USERS_ROUTE,
+} from "@/utils/constants";
+import axios from "axios";
+import RegisterFormCard from "@/components/molecules/RegisterFormCard";
 
 export default function RegisterForm() {
   const navigate = useNavigate();
-
   const {
     register,
     handleSubmit,
@@ -20,8 +25,7 @@ export default function RegisterForm() {
   const onSubmit = async (data: RegisterFormData) => {
     try {
       const fullName = `${data.firstName} ${data.lastName}`.trim();
-
-      await axios.post(`${import.meta.env.VITE_API_URL}/users`, {
+      await axios.post(`${import.meta.env.VITE_API_URL}${USERS_ROUTE}`, {
         name: fullName,
         email: data.email,
         password: data.password,
@@ -29,23 +33,22 @@ export default function RegisterForm() {
         birthDate: data.birthDate,
         hasCompleteProfile: true,
       });
-
-      alert("Conta criada com sucesso! ✅");
-      navigate("/login");
-    } catch (error: any) {
+      alert(REGISTER_COMPLETE);
+      navigate(LOGIN_ROUTE);
+    } catch (error) {
       console.error(error);
-      alert("Erro ao criar conta. Verifique os dados e tente novamente.");
+      alert(GENERIC_REGISTER_ERROR);
     }
   };
 
   return (
-    <AuthForm
+    <RegisterFormCard
       title="Criar nova conta"
       logo={folhaImg}
       onSubmit={handleSubmit(onSubmit)}
-      submitText={isSubmitting ? "Cadastrando..." : "Cadastrar"}
+      submitText="Cadastrar"
+      isSubmitting={isSubmitting}
     >
-      {/* Nome e Sobrenome */}
       <div className="flex flex-wrap w-full gap-3">
         <div className="flex-1 min-w-0">
           <Input
@@ -58,7 +61,6 @@ export default function RegisterForm() {
             </p>
           )}
         </div>
-
         <div className="flex-1 min-w-0">
           <Input
             placeholder="Sobrenome"
@@ -72,7 +74,6 @@ export default function RegisterForm() {
         </div>
       </div>
 
-      {/* Email */}
       <Input
         type="email"
         placeholder="E-mail"
@@ -82,13 +83,15 @@ export default function RegisterForm() {
         <p className="text-red-500 text-sm text-left">{errors.email.message}</p>
       )}
 
-      {/* Senha */}
       <Input
         type="password"
         placeholder="Senha"
         {...register("password", {
           required: "Senha obrigatória",
-          minLength: { value: 6, message: "Mínimo de 6 caracteres" },
+          minLength: {
+            value: 8,
+            message: "A senha deve ter no mínimo 8 caracteres",
+          },
         })}
       />
       {errors.password && (
@@ -97,7 +100,6 @@ export default function RegisterForm() {
         </p>
       )}
 
-      {/* Data de nascimento */}
       <div className="flex flex-col w-full text-left">
         <label className="text-sm font-medium text-gray-700">
           Data de nascimento
@@ -111,7 +113,6 @@ export default function RegisterForm() {
         )}
       </div>
 
-      {/* Gênero */}
       <div className="flex flex-col w-full text-left">
         <label className="text-sm font-medium text-gray-700">Gênero</label>
         <Select
@@ -136,14 +137,13 @@ export default function RegisterForm() {
         )}
       </div>
 
-      {/* Botão extra */}
       <button
         type="button"
-        onClick={() => navigate("/login")}
+        onClick={() => navigate(LOGIN_ROUTE)}
         className="text-sm text-green-700 hover:underline cursor-pointer"
       >
         Já tem uma conta? Entrar
       </button>
-    </AuthForm>
+    </RegisterFormCard>
   );
 }

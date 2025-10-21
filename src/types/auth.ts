@@ -1,10 +1,11 @@
 export interface User {
-  id: string
-  name: string
-  email: string
+  id: string;
+  name: string;
+  email: string;
+  hasCompleteProfile: boolean;
 }
 
 export interface LoginResponse {
-  user: User
-  token: string
+  user: User;
+  access_token: string;
 }

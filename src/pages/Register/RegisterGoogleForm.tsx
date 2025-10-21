@@ -1,17 +1,25 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
-import AuthForm from "@/components/molecules/AuthForm";
+import RegisterFormCard from "@/components/molecules/RegisterFormCard";
 import folhaImg from "@/assets/folha.png";
 import Input from "@/components/atoms/Input";
 import Select from "@/components/atoms/Select";
 import type { RegisterGoogleFormData } from "@/types/registerGoogleForm";
 import axios from "axios";
+import { Gender } from "@/types/gender";
+import {
+  GOOGLE_REGISTER_ERROR,
+  LOGIN_ROUTE,
+  REGISTER_COMPLETE,
+  USERS_ROUTE,
+} from "@/utils/constants";
 
 export default function RegisterGoogle() {
   const location = useLocation();
   const navigate = useNavigate();
-  const fromGoogle = location.state?.fromGoogle;
+  const googleState = location.state;
+  const fromGoogle = googleState?.fromGoogle;
 
   const {
     register,
@@ -21,23 +29,21 @@ export default function RegisterGoogle() {
 
   useEffect(() => {
     if (!fromGoogle) {
-      navigate("/login");
+      navigate(LOGIN_ROUTE);
     }
   }, [fromGoogle, navigate]);
 
   const onSubmit = async (data: RegisterGoogleFormData) => {
     try {
-      // 📨 monta o payload
       const updatePayload = {
         name: `${data.firstName} ${data.lastName}`,
         birthDate: data.birthDate,
         gender: data.gender,
-        hasCompleteProfile: true, // se quiser marcar como perfil completo
+        hasCompleteProfile: true,
       };
 
-      // ⚙️ chama o backend
       await axios.patch(
-        `${import.meta.env.VITE_API_URL}/users/${fromGoogle.email}`,
+        `${import.meta.env.VITE_API_URL}${USERS_ROUTE}${googleState.email}`,
         updatePayload,
         {
           headers: {
@@ -46,22 +52,22 @@ export default function RegisterGoogle() {
         }
       );
 
-      alert("Cadastro Google completo! ✅");
+      alert(REGISTER_COMPLETE);
       navigate("/");
     } catch (error: any) {
       console.error(error);
-      alert("Erro ao concluir cadastro");
+      alert(GOOGLE_REGISTER_ERROR);
     }
   };
 
   return (
-    <AuthForm
+    <RegisterFormCard
       title="Finalizar cadastro"
       logo={folhaImg}
       onSubmit={handleSubmit(onSubmit)}
-      submitText={isSubmitting ? "Concluindo..." : "Concluir"}
+      submitText={"Concluir"}
+      isSubmitting={isSubmitting}
     >
-      {/* Nome + Sobrenome */}
       <div className="flex flex-wrap w-full gap-3">
         <div className="flex-1 min-w-0">
           <Input
@@ -101,18 +107,23 @@ export default function RegisterGoogle() {
         )}
       </div>
 
-      {/* Gênero */}
       <div className="w-full">
         <Select
           defaultValue=""
-          {...register("gender", { required: "Selecione o gênero" })}
+          {...register("gender", { required: "Selecione um gênero" })}
         >
           <option value="" disabled>
-            Selecione o gênero
+            Selecione
           </option>
-          <option value="masculino">Masculino</option>
-          <option value="feminino">Feminino</option>
-          <option value="outro">Outro</option>
+          {Object.values(Gender).map((g) => (
+            <option key={g} value={g}>
+              {g === Gender.MALE
+                ? "Masculino"
+                : g === Gender.FEMALE
+                ? "Feminino"
+                : "Outro"}
+            </option>
+          ))}
         </Select>
         {errors.gender && (
           <p className="text-red-500 text-sm text-left mt-1">
@@ -120,6 +131,6 @@ export default function RegisterGoogle() {
           </p>
         )}
       </div>
-    </AuthForm>
+    </RegisterFormCard>
   );
 }

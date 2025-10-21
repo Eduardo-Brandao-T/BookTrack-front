@@ -1,27 +1,52 @@
 import { useForm } from "react-hook-form";
 import { useAuth } from "@/app/hooks/useAuth";
 import Input from "@/components/atoms/Input";
-import Button from "@/components/atoms/Button";
 import Title from "@/components/atoms/Title";
 import { useNavigate } from "react-router-dom";
 import type { LoginFormData } from "@/types/loginForm";
-import { authService } from "@/services/authService";
 import LoginWithGoogle from "@/components/molecules/LoginWithGoogle";
+import {
+  EMAIL_NOT_FOUND,
+  EMAIL_NOT_FOUND_MESSAGE,
+  GENERIC_LOGIN_ERROR,
+  INVALID_PASSWORD,
+  INVALID_PASSWORD_MESSAGE,
+  REGISTER_ROUTE,
+} from "@/utils/constants";
+import { LoadingButton } from "@mui/lab";
 
 export default function LoginForm() {
   const { login } = useAuth();
   const navigate = useNavigate();
+
   const {
     register,
     handleSubmit,
-    formState: { isSubmitting },
+    formState: { errors, isSubmitting },
+    setError,
   } = useForm<LoginFormData>();
 
   const onSubmit = async (data: LoginFormData) => {
     try {
       await login(data.email, data.password);
-    } catch (err) {
-      alert("Erro ao fazer login");
+      navigate("/");
+    } catch (err: any) {
+      if (err.message === EMAIL_NOT_FOUND) {
+        setError("email", {
+          type: "manual",
+          message: EMAIL_NOT_FOUND_MESSAGE,
+        });
+      } else if (err.message === INVALID_PASSWORD) {
+        setError("password", {
+          type: "manual",
+          message: INVALID_PASSWORD_MESSAGE,
+        });
+      } else {
+        setError("password", {
+          type: "manual",
+          message: GENERIC_LOGIN_ERROR,
+        });
+      }
     }
   };
 
@@ -32,21 +57,36 @@ export default function LoginForm() {
     >
       <Title>Bem-vindo à sua estante</Title>
 
-      <Input
-        type="email"
-        placeholder="E-mail"
-        {...register("email", { required: true })}
-      />
+      <div className="w-full">
+        <Input
+          type="email"
+          placeholder="E-mail"
+          {...register("email", { required: "E-mail é obrigatório" })}
+        />
+        {errors.email && (
+          <p className="text-red-500 text-sm mt-1">{errors.email.message}</p>
+        )}
+      </div>
 
-      <Input
-        type="password"
-        placeholder="Senha"
-        {...register("password", { required: true })}
-      />
+      <div className="w-full">
+        <Input
+          type="password"
+          placeholder="Senha"
+          {...register("password", { required: "Senha é obrigatória" })}
+        />
+        {errors.password && (
+          <p className="text-red-500 text-sm mt-1">{errors.password.message}</p>
+        )}
+      </div>
 
-      <Button type="submit" loading={isSubmitting}>
+      <LoadingButton
+        type="submit"
+        loading={isSubmitting}
+        fullWidth
+        className="!bg-dark-green hover:!bg-matcha !text-white !rounded-2xl !py-3 !font-semibold transition"
+      >
         Entrar
-      </Button>
+      </LoadingButton>
 
       <button
         type="button"
@@ -59,7 +99,7 @@ export default function LoginForm() {
         <span>Não tem conta? </span>
         <button
           type="button"
-          onClick={() => navigate("/register")}
+          onClick={() => navigate(REGISTER_ROUTE)}
           className="text-green-700 font-medium hover:underline cursor-pointer"
         >
           Cadastre-se
