@@ -5,7 +5,7 @@ import RegisterFormCard from "@/components/molecules/RegisterFormCard";
 import folhaImg from "@/assets/folha.png";
 import Input from "@/components/atoms/Input";
 import Select from "@/components/atoms/Select";
-import type { RegisterGoogleFormData } from "@/types/registerGoogleForm";
+import type { RegisterGoogleFormData } from "@/types/registerGoogleFormType";
 import axios from "axios";
 import { Gender } from "@/types/gender";
 import {

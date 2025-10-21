@@ -3,7 +3,7 @@ import { useAuth } from "@/app/hooks/useAuth";
 import Input from "@/components/atoms/Input";
 import Title from "@/components/atoms/Title";
 import { useNavigate } from "react-router-dom";
-import type { LoginFormData } from "@/types/loginForm";
+import type { LoginFormData } from "@/types/loginFormType";
 import LoginWithGoogle from "@/components/molecules/LoginWithGoogle";
 import {
   EMAIL_NOT_FOUND,
