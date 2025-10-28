@@ -1,42 +1,27 @@
-import { authService } from "@/services/authService";
-import { GOOGLE_LOGIN_ERROR } from "@/utils/constants";
-import { GoogleLogin } from "@react-oauth/google";
-import { useNavigate } from "react-router-dom";
+import { useAuth } from "@/app/hooks/useAuth";
 
 export default function LoginWithGoogle() {
-  const navigate = useNavigate();
+  const { loginWithGoogle } = useAuth();
 
-  const handleSuccess = async (credentialResponse: any) => {
+  const handleLogin = async () => {
     try {
-      const { credential } = credentialResponse;
-      const res = await authService.googleLogin(credential);
-
-      if (res.user.hasCompleteProfile) {
-        navigate("/");
-      } else {
-        navigate("/register-google", {
-          state: {
-            fromGoogle: true,
-            email: res.user.email,
-            name: res.user.name,
-          },
-        });
-      }
+      await loginWithGoogle();
+      // redireciona para home
+      window.location.href = "/";
     } catch (err) {
-      console.error(err);
-      alert(GOOGLE_LOGIN_ERROR);
+      alert("Erro ao fazer login com Google");
     }
   };
 
   return (
     <div className="w-full flex justify-center">
-      <GoogleLogin
-        onSuccess={handleSuccess}
-        onError={() => console.log("Erro no login do Google")}
-        text="continue_with"
-        shape="pill"
-        width="280"
-      />
+      <button
+        type="button"
+        onClick={handleLogin}
+        className="px-6 py-3 bg-blue-600 text-white rounded-full hover:bg-blue-700"
+      >
+        Continuar com Google
+      </button>
     </div>
   );
 }

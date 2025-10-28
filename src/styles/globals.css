@@ -7,14 +7,18 @@
 */
 
 @theme {
-  --color-matcha: #4CAF50;
-  --color-dark-green: #679C2D;
-  --color-brown: #4E342E;
+  --color-matcha: #4caf50;
+  --color-dark-green: #679c2d;
+  --color-brown: #4e342e;
   --color-cream: #f6e9d2;
-  --color-white: #FFFEF6;
+  --color-white: #fefaec;
+  --color-beryl-green: #dae3c3;
+  --color-parsley-green: #2d5a1b;
 }
 
-html, body, #root {
+html,
+body,
+#root {
   margin: 0;
   padding: 0;
   height: 100%;
@@ -22,5 +26,5 @@ html, body, #root {
 
 body {
   background-color: var(--color-cream);
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
 }

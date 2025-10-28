@@ -1,13 +1,13 @@
-import { createBrowserRouter, RouterProvider } from 'react-router-dom'
-import PrivateRoute from './PrivateRoute'
-import Login from '@/pages/Login/Login'
-import Home from '@/pages/Home/Home'
-import RegisterForm from '@/pages/Register/RegisterForm'
-import RegisterGoogleForm from '@/pages/Register/RegisterGoogleForm'
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import PrivateRoute from "./PrivateRoute";
+import Login from "@/pages/Login/Login";
+import Home from "@/pages/Home/Home";
+import RegisterForm from "@/pages/Register/RegisterForm";
+import RegisterGoogleForm from "@/pages/Register/RegisterGoogleForm";
 
 const router = createBrowserRouter([
   {
-    path: '/',
+    path: "/",
     element: (
       <PrivateRoute>
         <Home />
@@ -15,19 +15,19 @@ const router = createBrowserRouter([
     ),
   },
   {
-    path: '/login',
+    path: "/login",
     element: <Login />,
   },
   {
-    path: '/register',
+    path: "/register",
     element: <RegisterForm />,
   },
   {
-    path: '/register-google',
+    path: "/register-google",
     element: <RegisterGoogleForm />,
-  }
-])
+  },
+]);
 
 export function AppRoutes() {
-  return <RouterProvider router={router} />
+  return <RouterProvider router={router} />;
 }

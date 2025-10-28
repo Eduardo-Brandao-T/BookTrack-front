@@ -13,7 +13,7 @@ import {
   INVALID_PASSWORD_MESSAGE,
   REGISTER_ROUTE,
 } from "@/utils/constants";
-import { LoadingButton } from "@mui/lab";
+import Button from "@mui/material/Button";
 
 export default function LoginForm() {
   const { login } = useAuth();
@@ -79,14 +79,14 @@ export default function LoginForm() {
         )}
       </div>
 
-      <LoadingButton
+      <Button
         type="submit"
-        loading={isSubmitting}
+        loading={isSubmitting} // ainda funciona
         fullWidth
         className="!bg-dark-green hover:!bg-matcha !text-white !rounded-2xl !py-3 !font-semibold transition"
       >
         Entrar
-      </LoadingButton>
+      </Button>
 
       <button
         type="button"
