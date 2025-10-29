@@ -11,7 +11,7 @@ import {
   REGISTER_COMPLETE,
   USERS_ROUTE,
 } from "@/utils/constants";
-import axios from "axios";
+import axios from "@config/axios";
 import RegisterFormCard from "@/components/molecules/RegisterFormCard";
 
 export default function RegisterForm() {

@@ -1,6 +1,6 @@
 import { signInWithPopup, signOut } from "firebase/auth";
 import { auth, googleProvider } from "@/config/firebase";
-import axios from "axios";
+import axios from "@config/axios";
 import { AUTH_ROUTE, LOGIN_ROUTE, GOOGLE_AUTH_ROUTE } from "@/utils/constants";
 import type { User, LoginResponse } from "@/types/auth";
 
@@ -19,11 +19,9 @@ export const authService = {
 
   async googleLogin(): Promise<LoginResponse> {
     try {
-      // Popup do Google
       const result = await signInWithPopup(auth, googleProvider);
       const idToken = await result.user.getIdToken();
 
-      // Envia pro backend
       const res = await axios.post(
         `${this.api_url}${AUTH_ROUTE}${GOOGLE_AUTH_ROUTE}`,
         { idToken }

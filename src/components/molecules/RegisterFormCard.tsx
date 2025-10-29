@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { LoadingButton } from "@mui/lab";
+import Button from "@mui/material/Button";
 
 interface RegisterFormCardProps {
   title: string;
@@ -35,14 +35,14 @@ export default function RegisterFormCard({
 
         {children}
 
-        <LoadingButton
+        <Button
           type="submit"
           loading={isSubmitting}
           fullWidth
           className="!bg-dark-green hover:!bg-matcha !text-white !rounded-2xl !py-3 !font-semibold transition"
         >
           {submitText}
-        </LoadingButton>
+        </Button>
       </form>
     </div>
   );

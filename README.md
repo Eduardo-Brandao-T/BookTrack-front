@@ -8,6 +8,7 @@ Feita com **React**, **TypeScript** e um design **minimalista em tons de verde**
 ## 🌿 Visão Geral
 
 O **BookTrack** permite que o usuário:
+
 - Faça login (ou cadastro) com e-mail ou Google;
 - Adicione seus livros e gerencie sua biblioteca pessoal;
 - Escreva resenhas e avaliações;
@@ -18,21 +19,22 @@ O **BookTrack** permite que o usuário:
 
 ## 🧱 Tecnologias Principais
 
-| Categoria | Ferramenta |
-|------------|-------------|
-| Frontend Framework | [React](https://react.dev/) |
-| Linguagem | [TypeScript](https://www.typescriptlang.org/) |
-| Estilização | [Tailwind CSS](https://tailwindcss.com/) |
-| Gerenciamento de Estado | [Zustand](https://zustand-demo.pmnd.rs/) |
-| Roteamento | [React Router](https://reactrouter.com/) |
-| Requisições HTTP | [Axios](https://axios-http.com/) |
-| Autenticação | OAuth2 (via backend NestJS) |
-| Build Tool | [Vite](https://vitejs.dev/) |
-| Design System | Customizado (verde natural e minimalista) |
+| Categoria               | Ferramenta                                    |
+| ----------------------- | --------------------------------------------- |
+| Frontend Framework      | [React](https://react.dev/)                   |
+| Linguagem               | [TypeScript](https://www.typescriptlang.org/) |
+| Estilização             | [Tailwind CSS](https://tailwindcss.com/)      |
+| Gerenciamento de Estado | [Zustand](https://zustand-demo.pmnd.rs/)      |
+| Roteamento              | [React Router](https://reactrouter.com/)      |
+| Requisições HTTP        | [Axios](https://axios-http.com/)              |
+| Autenticação            | OAuth2 (via backend NestJS)                   |
+| Build Tool              | [Vite](https://vitejs.dev/)                   |
+| Design System           | Customizado (verde natural e minimalista)     |
 
 ---
 
 ## 🧭 Estrutura de Pastas
+
 ```text
 ├── public/               # Ícones, manifest e imagens estáticas
 ├── src/
@@ -61,26 +63,31 @@ npm install   # ou yarn install
 ```
 
 ### 2. Configurar variáveis de ambiente
+
 Crie um arquivo .env baseado em .env.example
 
 ### 3. Rodar o servidor de desenvolvimento
-```npm run dev```
+
+`npm run dev`
 
 ### 4. Build para Produção
-```npm run build```
+
+`npm run build`
 
 ## 🧩 Integração com o Backend
+
 O backend é feito em NestJS, com microsserviços e RabbitMQ.
 Você pode encontrar o repositório em:
 link
 
 ## Fluxo principal:
 
-Login com Google → JWT recebido → salvo no localStorage.
+Login com Google → Cookies salvos no front mas sem acesso manual.
 
-Todas as chamadas à API usam Authorization: Bearer <token>.
+Todas as chamadas à API usam Authorization: Cookies.
 
 ## 🎨 Identidade Visual
+
 Paleta principal:
 
 Verde matcha: #8FBF7A
@@ -94,9 +101,11 @@ Estilo: natural, minimalista, inspirado em Ghibli.
 Tipografia: Poppins ou Inter.
 
 ## 🧪 Testes
+
 npm run test
 
 ## 📱 Responsividade
+
 O layout foi projetado para:
 
 📱 Smartphones (até 480px)

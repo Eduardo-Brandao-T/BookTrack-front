@@ -81,7 +81,7 @@ export default function LoginForm() {
 
       <Button
         type="submit"
-        loading={isSubmitting} // ainda funciona
+        loading={isSubmitting}
         fullWidth
         className="!bg-dark-green hover:!bg-matcha !text-white !rounded-2xl !py-3 !font-semibold transition"
       >

@@ -6,7 +6,7 @@ import folhaImg from "@/assets/folha.png";
 import Input from "@/components/atoms/Input";
 import Select from "@/components/atoms/Select";
 import type { RegisterGoogleFormData } from "@/types/registerGoogleFormType";
-import axios from "axios";
+import axios from "@config/axios";
 import { Gender } from "@/types/gender";
 import {
   GOOGLE_REGISTER_ERROR,
@@ -43,13 +43,8 @@ export default function RegisterGoogle() {
       };
 
       await axios.patch(
-        `${import.meta.env.VITE_API_URL}${USERS_ROUTE}${googleState.email}`,
-        updatePayload,
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        }
+        `${import.meta.env.VITE_API_URL}${USERS_ROUTE}${googleState.id}`,
+        updatePayload
       );
 
       alert(REGISTER_COMPLETE);
